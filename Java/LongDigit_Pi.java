@@ -9,7 +9,7 @@ public class LongDigit_Pi {
     static int max = 1000;
     public static void main(String[] args) throws Exception {
         int digit = 100;
-        int updateNum = 5;
+        int updateNum = 30;
         int sqrtQuality = 100;
 
         if (args.length >= 1) digit = Integer.parseInt(args[0]);
@@ -34,7 +34,11 @@ public class LongDigit_Pi {
             int[] pi = div(multi(add(a, b), add(a, b)), multi(cast(4), t), digit);
             System.out.print(i + ". 円周率: ");
             print(pi);
-            if (Arrays.equals(pi, piTemp)) break;
+            if (Arrays.equals(pi, piTemp)) {
+                System.out.print("result: ");
+                print(pi);
+                break;
+            }
             piTemp = new int[pi.length];
             for (int k = 0; k < pi.length; k++) piTemp[k] = pi[k];
 
