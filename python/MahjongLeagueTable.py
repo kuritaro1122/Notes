@@ -124,6 +124,7 @@ if __name__ == '__main__':
     print(names)
     created_table_count = [[] for i in range(MATCH_NUM)]
     for i in range(MATCH_NUM):
+        remain_player_list = [p for p in player_list]
         print(i+1,'回戦')
         tables = []
         if use_history_or_random(i):
@@ -133,8 +134,11 @@ if __name__ == '__main__':
         for table in tables:
             if len(table) >= TABLE_PLAYER_NUM:
                 add_history_each(table)
+                for p in table:
+                    remain_player_list.remove(p)
             names = [p.to_string() for p in table]
             print(names)
+        print('remain_player', [p.to_string() for p in remain_player_list])
         print_history(player_list)
         created_table_count[i] = len([t for t in tables if len(t) >= TABLE_PLAYER_NUM])
         print('tables_num:', created_table_count[i])
