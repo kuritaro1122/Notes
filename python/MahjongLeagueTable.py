@@ -50,7 +50,7 @@ def compare(a:Player, b:Player, tables:list, table_index:int):
     a_score = -a.get_match_num() + (is_can_sit(a, tables, table_index) if 0 else -999)
     b_score = -b.get_match_num() + (is_can_sit(b, tables, table_index) if 0 else -999)
     return a_score - b_score
-def is_can_sit(target:Player, tables:list, table_index:int):
+def can_player_sit(target:Player, tables:list, table_index:int):
     # for p in tables[table_index]:
     #     if (target in tables[table_index]) or target.team == p.team or target.is_contain_history(p):
     #         return False
@@ -58,15 +58,12 @@ def is_can_sit(target:Player, tables:list, table_index:int):
     #     if i != table_index and (target in table):
     #         return False
     # return True
-    return is_can_join_match(target=target, tables=tables, join_table_index=table_index) and is_can_sit_table(target=target, table=tables[table_index])
-def is_can_sit_table(target:Player, table:list):
+    return can_player_join_to_match(target=target, tables=tables, join_table_index=table_index) and can_player_sit_to_table(target=target, table=tables[table_index])
+def can_player_sit_to_table(target:Player, table:list):
     for p in table:
         if (target in table) or target.team == p.team or target.is_contain_history(p):
             return False
     return True
-def is_can_join_match(target:Player, tables:list, join_table_index:int):
-    for i, table in enumerate(tables):
-        if i != join_table_index and target in table:
             return False
     return True
 def add_history_each(table:list):
@@ -79,7 +76,7 @@ def get_tables_from_history(player_list:list, tables_num=TABLE_NUM, table_player
         for k in range(table_player_num):
             cp = None
             for p in player_list:
-                if is_can_sit(p, tables, i) and (cp == None or compare(p, cp, tables, i) > 0):
+                if can_player_sit(p, tables, i) and (cp == None or compare(p, cp, tables, i) > 0):
                     cp = p
             if cp != None:
                 tables[i].append(cp)
@@ -95,9 +92,9 @@ def get_tables_from_random(player_list:list, tables_num=TABLE_NUM, table_player_
             while True:
                 c += 1
                 p = player_list[random.randint(0, len(player_list) - 1)]
-                if is_can_sit(p, tables, i) or c > 99999:
+                if can_player_sit(p, tables, i) or c > 99999:
                     break
-            if is_can_sit(p, tables, i):
+            if can_player_sit(p, tables, i):
                 tables[i].append(p)
     return tables
 def id(player:Player):
