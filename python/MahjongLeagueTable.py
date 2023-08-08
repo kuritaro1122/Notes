@@ -64,6 +64,14 @@ def can_player_sit_to_table(target:Player, table:list):
         if (target in table) or target.team == p.team or target.is_contain_history(p):
             return False
     return True
+def can_player_join_to_match(target:Player, tables:list):
+    for table in tables:
+        if target in table:
+            return False
+    return True
+def can_match_add(tables:list, target_table:list):
+    for p in target_table:
+        if can_player_join_to_match(p, tables) == False:
             return False
     return True
 def add_history_each(table:list):
