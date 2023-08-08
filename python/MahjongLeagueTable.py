@@ -86,8 +86,6 @@ def get_tables_from_history(player_list:list, tables_num=TABLE_NUM, table_player
             #else:
             #    for ind, p in enumerate(tables[i]):
             #        p._score -= (1.0 - float(ind) / (len(tables[i])))
-        if len(tables[i]) >= TABLE_PLAYER_NUM:
-            add_history_each(tables[i])
     return tables
 def get_tables_from_random(player_list:list, tables_num=TABLE_NUM, table_player_num=TABLE_PLAYER_NUM):
     tables = [[] for i in range(tables_num)]
@@ -101,7 +99,6 @@ def get_tables_from_random(player_list:list, tables_num=TABLE_NUM, table_player_
                     break
             if is_can_sit(p, tables, i):
                 tables[i].append(p)
-        add_history_each(tables[i])
     return tables
 def id(player:Player):
     return player.team * TEAM_PLAYER_NUM + int(player.name)
@@ -134,6 +131,8 @@ if __name__ == '__main__':
         else:
             tables = get_tables_from_random(player_list)
         for table in tables:
+            if len(table) >= TABLE_PLAYER_NUM:
+                add_history_each(table)
             names = [p.to_string() for p in table]
             print(names)
         print_history(player_list)
