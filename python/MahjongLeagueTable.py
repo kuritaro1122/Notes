@@ -58,7 +58,7 @@ def can_player_sit(target:Player, tables:list, table_index:int):
     #     if i != table_index and (target in table):
     #         return False
     # return True
-    return can_player_join_to_match(target=target, tables=tables, join_table_index=table_index) and can_player_sit_to_table(target=target, table=tables[table_index])
+    return can_player_join_to_match(target=target, tables=tables) and can_player_sit_to_table(target=target, table=tables[table_index])
 def can_player_sit_to_table(target:Player, table:list):
     for p in table:
         if (target in table) or target.team == p.team or target.is_contain_history(p):
