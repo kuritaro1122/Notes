@@ -105,6 +105,22 @@ def get_tables_from_random(player_list:list, tables_num=TABLE_NUM, table_player_
             if can_player_sit(p, tables, i):
                 tables[i].append(p)
     return tables
+def get_tables_from_all_search(player_list:list, tables_num=TABLE_NUM, table_player_num=TABLE_PLAYER_NUM):
+    all_tables = all_tables_search(player_list, table_player_num)
+
+    pass
+def all_tables_search(player_list:list, table_player_num=TABLE_PLAYER_NUM, current_table=[]):
+    if len(current_table) >= table_player_num:
+        return [current_table]
+    next_all_tables = [] # current_tableに1人加えた複数のテーブル
+    for p in player_list:
+        if can_player_sit_to_table(p, current_table):
+            table = [p for p in current_table]
+            table.append(p)
+            next_tables = all_tables_search(player_list=player_list, table_player_num=table_player_num, current_table=table)
+            next_all_tables.extend(next_tables)
+    return next_all_tables
+
 def id(player:Player):
     return player.team * TEAM_PLAYER_NUM + int(player.name)
 
