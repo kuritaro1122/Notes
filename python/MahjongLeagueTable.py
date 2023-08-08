@@ -51,11 +51,22 @@ def compare(a:Player, b:Player, tables:list, table_index:int):
     b_score = -b.get_match_num() + (is_can_sit(b, tables, table_index) if 0 else -999)
     return a_score - b_score
 def is_can_sit(target:Player, tables:list, table_index:int):
-    for p in tables[table_index]:
-        if (target in tables[table_index]) or target.team == p.team or target.is_contain_history(p):
+    # for p in tables[table_index]:
+    #     if (target in tables[table_index]) or target.team == p.team or target.is_contain_history(p):
+    #         return False
+    # for i, table in enumerate(tables):
+    #     if i != table_index and (target in table):
+    #         return False
+    # return True
+    return is_can_join_match(target=target, tables=tables, join_table_index=table_index) and is_can_sit_table(target=target, table=tables[table_index])
+def is_can_sit_table(target:Player, table:list):
+    for p in table:
+        if (target in table) or target.team == p.team or target.is_contain_history(p):
             return False
+    return True
+def is_can_join_match(target:Player, tables:list, join_table_index:int):
     for i, table in enumerate(tables):
-        if i != table_index and (target in table):
+        if i != join_table_index and target in table:
             return False
     return True
 def add_history_each(table:list):
