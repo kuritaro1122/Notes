@@ -193,9 +193,9 @@ def fill_match_tables_blank(match_tables:list):
 # 対戦履歴を無視して最適化を行う
 def adjust_matchs_tables(matchs_tables:list):
     for i in range(TABLE_NUM):
-        print(i,'週目')
-        #adjust_match_table(matchs_tables, (TABLE_NUM-1)-i, added_tables=[[0, 0, matchs_tables[0][0]]])
-        added_tables, remove_tables = adjust_match_table(matchs_tables, (TABLE_NUM-1)-i, added_tables=[])
+        index = (TABLE_NUM - 1) - i
+        print('修正', i,'週目 -', index, '回戦 から修正')
+        added_tables, remove_tables = adjust_match_table(matchs_tables, index, added_tables=[])
         print('add:', [(t[0], t[1], player_to_name_table(t[ADDED_TABLE_PARAM.NEW_TABLE])) for t in added_tables], 'len:', len(added_tables))
         print('rem:', [(t[0], t[1], player_to_name_table(t[ADDED_TABLE_PARAM.NEW_TABLE])) for t in remove_tables], 'len:', len(remove_tables))
         if len(added_tables) > len(remove_tables):
@@ -269,3 +269,3920 @@ if __name__ == '__main__':
             print(player_to_name_table(table))
     print_table_count(matchs_tables=matchs_tables)
     print_history(player_list)
+
+"""
+% python3 MahjongLeagueTable.py
+メンバー
+['A1', 'A2', 'A3', 'A4', 'B1', 'B2', 'B3', 'B4', 'C1', 'C2', 'C3', 'C4', 'D1', 'D2', 'D3', 'D4', 'E1', 'E2', 'E3', 'E4', 'F1', 'F2', 'F3', 'F4', 'G1', 'G2', 'G3', 'G4', 'H1', 'H2', 'H3', 'H4']
+1 回戦
+['A1', 'B1', 'C1', 'D1']
+['A2', 'B2', 'C2', 'D2']
+['A3', 'B3', 'C3', 'D3']
+['A4', 'B4', 'C4', 'D4']
+['E1', 'F1', 'G1', 'H1']
+['E2', 'F2', 'G2', 'H2']
+['E3', 'F3', 'G3', 'H3']
+['E4', 'F4', 'G4', 'H4']
+remain_player []
+2 回戦
+['A1', 'B2', 'C3', 'D4']
+['A2', 'B1', 'C4', 'D3']
+['A3', 'B4', 'C1', 'D2']
+['A4', 'B3', 'C2', 'D1']
+['E1', 'F2', 'G3', 'H4']
+['E2', 'F1', 'G4', 'H3']
+['E3', 'F4', 'G1', 'H2']
+['E4', 'F3', 'G2', 'H1']
+remain_player []
+3 回戦
+['A1', 'B3', 'C4', 'D2']
+['A2', 'B4', 'C3', 'D1']
+['A3', 'B1', 'C2', 'D4']
+['A4', 'B2', 'C1', 'D3']
+['E1', 'F3', 'G4', 'H2']
+['E2', 'F4', 'G3', 'H1']
+['E3', 'F1', 'G2', 'H4']
+['E4', 'F2', 'G1', 'H3']
+remain_player []
+4 回戦
+['A1', 'B4', 'C2', 'D3']
+['A2', 'B3', 'C1', 'D4']
+['A3', 'B2', 'C4', 'D1']
+['A4', 'B1', 'C3', 'D2']
+['E1', 'F4', 'G2', 'H3']
+['E2', 'F3', 'G1', 'H4']
+['E3', 'F2', 'G4', 'H1']
+['E4', 'F1', 'G3', 'H2']
+remain_player []
+5 回戦
+['A1', 'E1']
+['A2', 'E2']
+['A3', 'E3']
+['A4', 'E4']
+['B1', 'F1']
+['B2', 'F2']
+['B3', 'F3']
+['B4', 'F4']
+remain_player ['A1', 'E1', 'A2', 'E2', 'A3', 'E3', 'A4', 'E4', 'B1', 'F1', 'B2', 'F2', 'B3', 'F3', 'B4', 'F4']
+6 回戦
+['A1', 'E1']
+['A2', 'E2']
+['A3', 'E3']
+['A4', 'E4']
+['B1', 'F1']
+['B2', 'F2']
+['B3', 'F3']
+['B4', 'F4']
+remain_player ['A1', 'E1', 'A2', 'E2', 'A3', 'E3', 'A4', 'E4', 'B1', 'F1', 'B2', 'F2', 'B3', 'F3', 'B4', 'F4']
+7 回戦
+['A1', 'E1']
+['A2', 'E2']
+['A3', 'E3']
+['A4', 'E4']
+['B1', 'F1']
+['B2', 'F2']
+['B3', 'F3']
+['B4', 'F4']
+remain_player ['A1', 'E1', 'A2', 'E2', 'A3', 'E3', 'A4', 'E4', 'B1', 'F1', 'B2', 'F2', 'B3', 'F3', 'B4', 'F4']
+8 回戦
+['A1', 'E1']
+['A2', 'E2']
+['A3', 'E3']
+['A4', 'E4']
+['B1', 'F1']
+['B2', 'F2']
+['B3', 'F3']
+['B4', 'F4']
+remain_player ['A1', 'E1', 'A2', 'E2', 'A3', 'E3', 'A4', 'E4', 'B1', 'F1', 'B2', 'F2', 'B3', 'F3', 'B4', 'F4']
+tables_count: [8, 8, 8, 8, 0, 0, 0, 0]
+all_tables_count 32
+1 回戦
+['A1', 'B1', 'C1', 'D1']
+['A2', 'B2', 'C2', 'D2']
+['A3', 'B3', 'C3', 'D3']
+['A4', 'B4', 'C4', 'D4']
+['E1', 'F1', 'G1', 'H1']
+['E2', 'F2', 'G2', 'H2']
+['E3', 'F3', 'G3', 'H3']
+['E4', 'F4', 'G4', 'H4']
+2 回戦
+['A1', 'B2', 'C3', 'D4']
+['A2', 'B1', 'C4', 'D3']
+['A3', 'B4', 'C1', 'D2']
+['A4', 'B3', 'C2', 'D1']
+['E1', 'F2', 'G3', 'H4']
+['E2', 'F1', 'G4', 'H3']
+['E3', 'F4', 'G1', 'H2']
+['E4', 'F3', 'G2', 'H1']
+3 回戦
+['A1', 'B3', 'C4', 'D2']
+['A2', 'B4', 'C3', 'D1']
+['A3', 'B1', 'C2', 'D4']
+['A4', 'B2', 'C1', 'D3']
+['E1', 'F3', 'G4', 'H2']
+['E2', 'F4', 'G3', 'H1']
+['E3', 'F1', 'G2', 'H4']
+['E4', 'F2', 'G1', 'H3']
+4 回戦
+['A1', 'B4', 'C2', 'D3']
+['A2', 'B3', 'C1', 'D4']
+['A3', 'B2', 'C4', 'D1']
+['A4', 'B1', 'C3', 'D2']
+['E1', 'F4', 'G2', 'H3']
+['E2', 'F3', 'G1', 'H4']
+['E3', 'F2', 'G4', 'H1']
+['E4', 'F1', 'G3', 'H2']
+5 回戦
+['A1', 'E1']
+['A2', 'E2']
+['A3', 'E3']
+['A4', 'E4']
+['B1', 'F1']
+['B2', 'F2']
+['B3', 'F3']
+['B4', 'F4']
+6 回戦
+['A1', 'E1']
+['A2', 'E2']
+['A3', 'E3']
+['A4', 'E4']
+['B1', 'F1']
+['B2', 'F2']
+['B3', 'F3']
+['B4', 'F4']
+7 回戦
+['A1', 'E1']
+['A2', 'E2']
+['A3', 'E3']
+['A4', 'E4']
+['B1', 'F1']
+['B2', 'F2']
+['B3', 'F3']
+['B4', 'F4']
+8 回戦
+['A1', 'E1']
+['A2', 'E2']
+['A3', 'E3']
+['A4', 'E4']
+['B1', 'F1']
+['B2', 'F2']
+['B3', 'F3']
+['B4', 'F4']
+tables_count: [8, 8, 8, 8, 0, 0, 0, 0]
+all_tables_count 32
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [0, 1, 2, 3, 4, 5, 6, 7]
+added_tables: []
+6 回戦 無効なtable_index: [0, 1, 2, 3, 4, 5, 6, 7]
+added_tables: [['B4', 'F2', 'E3', 'A4']]
+5 回戦 無効なtable_index: [0, 1, 2, 3, 4, 5, 6, 7]
+added_tables: [['B4', 'F2', 'E3', 'A4'], ['B3', 'A4', 'E1', 'F1']]
+4 回戦 無効なtable_index: [0, 1, 2, 3, 4, 5, 6, 7]
+added_tables: [['B4', 'F2', 'E3', 'A4'], ['B3', 'A4', 'E1', 'F1'], ['A2', 'F2', 'B1', 'E1']]
+3 回戦 無効なtable_index: []
+add: [(7, 3, ['B4', 'F2', 'E3', 'A4']), (6, 2, ['B3', 'A4', 'E1', 'F1']), (5, 6, ['A2', 'F2', 'B1', 'E1']), (4, 6, ['F4', 'E3', 'A4', 'B3'])] len: 4
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [0, 1, 3, 4, 5, 6, 7]
+added_tables: []
+5 回戦 無効なtable_index: [0, 1, 2, 3, 4, 5, 7]
+added_tables: [['E1', 'F1', 'A1', 'B1']]
+4 回戦 無効なtable_index: [0, 1, 2, 3, 4, 5, 7]
+added_tables: [['E1', 'F1', 'A1', 'B1'], ['F4', 'B1', 'E1', 'A1']]
+3 回戦 無効なtable_index: []
+add: [(6, 1, ['E1', 'F1', 'A1', 'B1']), (5, 0, ['F4', 'B1', 'E1', 'A1']), (4, 1, ['F4', 'A3', 'B2', 'E4'])] len: 3
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [1, 2, 3, 4, 5, 7]
+added_tables: []
+4 回戦 無効なtable_index: [0, 2, 3, 4, 5, 7]
+added_tables: [['F1', 'E4', 'B2', 'A2']]
+3 回戦 無効なtable_index: []
+add: [(5, 4, ['F1', 'E4', 'B2', 'A2']), (4, 3, ['B2', 'E1', 'A1', 'F4'])] len: 2
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [0, 2, 4, 5, 7]
+added_tables: []
+3 回戦 無効なtable_index: []
+add: [(4, 0, ['E3', 'B1', 'F2', 'A3'])] len: 1
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [0, 1, 2, 4, 5, 6, 7]
+added_tables: []
+6 回戦 無効なtable_index: [0, 3, 4, 5, 6, 7]
+added_tables: [['F4', 'A3', 'B4', 'E3']]
+5 回戦 無効なtable_index: [1, 2, 3, 5, 7]
+added_tables: [['F4', 'A3', 'B4', 'E3'], ['F4', 'E1', 'B1', 'A1']]
+4 回戦 無効なtable_index: [2, 4, 5, 7]
+added_tables: [['F4', 'A3', 'B4', 'E3'], ['F4', 'E1', 'B1', 'A1'], ['A2', 'B4', 'E2', 'F4']]
+3 回戦 無効なtable_index: []
+add: [(7, 7, ['F4', 'A3', 'B4', 'E3']), (6, 6, ['F4', 'E1', 'B1', 'A1']), (5, 7, ['A2', 'B4', 'E2', 'F4']), (4, 7, ['A3', 'F4', 'E3', 'B4'])] len: 4
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [0, 3, 4, 5, 7]
+added_tables: []
+5 回戦 無効なtable_index: [1, 2, 3, 5]
+added_tables: [['F4', 'B4', 'E4', 'A1']]
+4 回戦 無効なtable_index: [2, 4, 5]
+added_tables: [['F4', 'B4', 'E4', 'A1'], ['A2', 'F2', 'B2', 'E4']]
+3 回戦 無効なtable_index: []
+add: [(6, 0, ['F4', 'B4', 'E4', 'A1']), (5, 2, ['A2', 'F2', 'B2', 'E4']), (4, 4, ['E3', 'A3', 'F1', 'B2'])] len: 3
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [1, 3, 5]
+added_tables: []
+4 回戦 無効なtable_index: [2, 5]
+added_tables: [['E4', 'A2', 'B2', 'F2']]
+3 回戦 無効なtable_index: []
+add: [(5, 3, ['E4', 'A2', 'B2', 'F2']), (4, 5, ['B2', 'A3', 'F2', 'E3'])] len: 2
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [0, 1, 2, 4, 5, 6]
+added_tables: []
+6 回戦 無効なtable_index: [3, 4, 5, 7]
+added_tables: [['E3', 'F1', 'B1', 'A3']]
+5 回戦 無効なtable_index: [1, 5]
+added_tables: [['E3', 'F1', 'B1', 'A3'], ['B1', 'E4', 'A4', 'F2']]
+4 回戦 無効なtable_index: [2]
+added_tables: [['E3', 'F1', 'B1', 'A3'], ['B1', 'E4', 'A4', 'F2'], ['F2', 'B2', 'E2', 'A2']]
+add: [(7, 1, ['E3', 'F1', 'B1', 'A3']), (6, 7, ['B1', 'E4', 'A4', 'F2']), (5, 1, ['F2', 'B2', 'E2', 'A2'])] len: 3
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [3, 4, 5]
+added_tables: []
+5 回戦 無効なtable_index: [5]
+added_tables: [['B1', 'E4', 'F2', 'A4']]
+add: [(6, 5, ['B1', 'E4', 'F2', 'A4'])] len: 1
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [0, 2, 4, 5, 6]
+added_tables: []
+6 回戦 無効なtable_index: [3, 4]
+added_tables: [['A3', 'E1', 'F2', 'B1']]
+5 回戦 無効なtable_index: [5]
+added_tables: [['A3', 'E1', 'F2', 'B1'], ['F1', 'E4', 'B1', 'A4']]
+add: [(7, 0, ['A3', 'E1', 'F2', 'B1']), (6, 3, ['F1', 'E4', 'B1', 'A4'])] len: 2
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2, 4, 5, 6]
+added_tables: []
+6 回戦 無効なtable_index: [4]
+added_tables: [['A3', 'F3', 'E3', 'B2']]
+add: [(7, 5, ['A3', 'F3', 'E3', 'B2'])] len: 1
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2, 4, 6]
+added_tables: []
+6 回戦 無効なtable_index: [4]
+added_tables: [['A3', 'F3', 'E3', 'B1']]
+add: [(7, 4, ['A3', 'F3', 'E3', 'B1'])] len: 1
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2, 6]
+added_tables: []
+6 回戦 無効なtable_index: [4]
+added_tables: [['E3', 'B3', 'A3', 'F3']]
+add: [(7, 6, ['E3', 'B3', 'A3', 'F3'])] len: 1
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 0 週目 - 7 回戦 から修正
+7 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 1 週目 - 6 回戦 から修正
+6 回戦 無効なtable_index: [4]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 2 週目 - 5 回戦 から修正
+5 回戦 無効なtable_index: [5]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 3 週目 - 4 回戦 から修正
+4 回戦 無効なtable_index: [2]
+added_tables: []
+add: [] len: 0
+rem: [] len: 0
+修正 4 週目 - 3 回戦 から修正
+3 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 5 週目 - 2 回戦 から修正
+2 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 6 週目 - 1 回戦 から修正
+1 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+修正 7 週目 - 0 回戦 から修正
+0 回戦 無効なtable_index: []
+add: [] len: 0
+rem: [] len: 0
+1 回戦
+['A1', 'B1', 'C1', 'D1']
+['A2', 'B2', 'C2', 'D2']
+['A3', 'B3', 'C3', 'D3']
+['A4', 'B4', 'C4', 'D4']
+['E1', 'F1', 'G1', 'H1']
+['E2', 'F2', 'G2', 'H2']
+['E3', 'F3', 'G3', 'H3']
+['E4', 'F4', 'G4', 'H4']
+2 回戦
+['A1', 'B2', 'C3', 'D4']
+['A2', 'B1', 'C4', 'D3']
+['A3', 'B4', 'C1', 'D2']
+['A4', 'B3', 'C2', 'D1']
+['E1', 'F2', 'G3', 'H4']
+['E2', 'F1', 'G4', 'H3']
+['E3', 'F4', 'G1', 'H2']
+['E4', 'F3', 'G2', 'H1']
+3 回戦
+['A1', 'B3', 'C4', 'D2']
+['A2', 'B4', 'C3', 'D1']
+['A3', 'B1', 'C2', 'D4']
+['A4', 'B2', 'C1', 'D3']
+['E1', 'F3', 'G4', 'H2']
+['E2', 'F4', 'G3', 'H1']
+['E3', 'F1', 'G2', 'H4']
+['E4', 'F2', 'G1', 'H3']
+4 回戦
+['A1', 'B4', 'C2', 'D3']
+['A2', 'B3', 'C1', 'D4']
+['A3', 'B2', 'C4', 'D1']
+['A4', 'B1', 'C3', 'D2']
+['E1', 'F4', 'G2', 'H3']
+['E2', 'F3', 'G1', 'H4']
+['E3', 'F2', 'G4', 'H1']
+['E4', 'F1', 'G3', 'H2']
+5 回戦
+['E3', 'B1', 'F2', 'A3']
+['F4', 'A3', 'B2', 'E4']
+['A3', 'E3']
+['B2', 'E1', 'A1', 'F4']
+['E3', 'A3', 'F1', 'B2']
+['B2', 'A3', 'F2', 'E3']
+['F4', 'E3', 'A4', 'B3']
+['A3', 'F4', 'E3', 'B4']
+6 回戦
+['F4', 'B1', 'E1', 'A1']
+['F2', 'B2', 'E2', 'A2']
+['A2', 'F2', 'B2', 'E4']
+['E4', 'A2', 'B2', 'F2']
+['F1', 'E4', 'B2', 'A2']
+['B2', 'F2']
+['A2', 'F2', 'B1', 'E1']
+['A2', 'B4', 'E2', 'F4']
+7 回戦
+['F4', 'B4', 'E4', 'A1']
+['E1', 'F1', 'A1', 'B1']
+['B3', 'A4', 'E1', 'F1']
+['F1', 'E4', 'B1', 'A4']
+['B1', 'F1']
+['B1', 'E4', 'F2', 'A4']
+['F4', 'E1', 'B1', 'A1']
+['B1', 'E4', 'A4', 'F2']
+8 回戦
+['A3', 'E1', 'F2', 'B1']
+['E3', 'F1', 'B1', 'A3']
+['A3', 'E3']
+['B4', 'F2', 'E3', 'A4']
+['A3', 'F3', 'E3', 'B1']
+['A3', 'F3', 'E3', 'B2']
+['E3', 'B3', 'A3', 'F3']
+['F4', 'A3', 'B4', 'E3']
+tables_count: [8, 8, 8, 8, 7, 7, 7, 7]
+all_tables_count 60
+A1 -> Counter({'B1': 1, 'B2': 1, 'B3': 1, 'B4': 1, 'C1': 1, 'C2': 1, 'C3': 1, 'C4': 1, 'D1': 1, 'D2': 1, 'D3': 1, 'D4': 1})
+A2 -> Counter({'B1': 1, 'B2': 1, 'B3': 1, 'B4': 1, 'C1': 1, 'C2': 1, 'C3': 1, 'C4': 1, 'D1': 1, 'D2': 1, 'D3': 1, 'D4': 1})
+A3 -> Counter({'B1': 1, 'B2': 1, 'B3': 1, 'B4': 1, 'C1': 1, 'C2': 1, 'C3': 1, 'C4': 1, 'D1': 1, 'D2': 1, 'D3': 1, 'D4': 1})
+A4 -> Counter({'B1': 1, 'B2': 1, 'B3': 1, 'B4': 1, 'C1': 1, 'C2': 1, 'C3': 1, 'C4': 1, 'D1': 1, 'D2': 1, 'D3': 1, 'D4': 1})
+B1 -> Counter({'A1': 1, 'A2': 1, 'A3': 1, 'A4': 1, 'C1': 1, 'C2': 1, 'C3': 1, 'C4': 1, 'D1': 1, 'D2': 1, 'D3': 1, 'D4': 1})
+B2 -> Counter({'A1': 1, 'A2': 1, 'A3': 1, 'A4': 1, 'C1': 1, 'C2': 1, 'C3': 1, 'C4': 1, 'D1': 1, 'D2': 1, 'D3': 1, 'D4': 1})
+B3 -> Counter({'A1': 1, 'A2': 1, 'A3': 1, 'A4': 1, 'C1': 1, 'C2': 1, 'C3': 1, 'C4': 1, 'D1': 1, 'D2': 1, 'D3': 1, 'D4': 1})
+B4 -> Counter({'A1': 1, 'A2': 1, 'A3': 1, 'A4': 1, 'C1': 1, 'C2': 1, 'C3': 1, 'C4': 1, 'D1': 1, 'D2': 1, 'D3': 1, 'D4': 1})
+C1 -> Counter({'A1': 1, 'A2': 1, 'A3': 1, 'A4': 1, 'B1': 1, 'B2': 1, 'B3': 1, 'B4': 1, 'D1': 1, 'D2': 1, 'D3': 1, 'D4': 1})
+C2 -> Counter({'A1': 1, 'A2': 1, 'A3': 1, 'A4': 1, 'B1': 1, 'B2': 1, 'B3': 1, 'B4': 1, 'D1': 1, 'D2': 1, 'D3': 1, 'D4': 1})
+C3 -> Counter({'A1': 1, 'A2': 1, 'A3': 1, 'A4': 1, 'B1': 1, 'B2': 1, 'B3': 1, 'B4': 1, 'D1': 1, 'D2': 1, 'D3': 1, 'D4': 1})
+C4 -> Counter({'A1': 1, 'A2': 1, 'A3': 1, 'A4': 1, 'B1': 1, 'B2': 1, 'B3': 1, 'B4': 1, 'D1': 1, 'D2': 1, 'D3': 1, 'D4': 1})
+D1 -> Counter({'A1': 1, 'A2': 1, 'A3': 1, 'A4': 1, 'B1': 1, 'B2': 1, 'B3': 1, 'B4': 1, 'C1': 1, 'C2': 1, 'C3': 1, 'C4': 1})
+D2 -> Counter({'A1': 1, 'A2': 1, 'A3': 1, 'A4': 1, 'B1': 1, 'B2': 1, 'B3': 1, 'B4': 1, 'C1': 1, 'C2': 1, 'C3': 1, 'C4': 1})
+D3 -> Counter({'A1': 1, 'A2': 1, 'A3': 1, 'A4': 1, 'B1': 1, 'B2': 1, 'B3': 1, 'B4': 1, 'C1': 1, 'C2': 1, 'C3': 1, 'C4': 1})
+D4 -> Counter({'A1': 1, 'A2': 1, 'A3': 1, 'A4': 1, 'B1': 1, 'B2': 1, 'B3': 1, 'B4': 1, 'C1': 1, 'C2': 1, 'C3': 1, 'C4': 1})
+E1 -> Counter({'F1': 1, 'F2': 1, 'F3': 1, 'F4': 1, 'G1': 1, 'G2': 1, 'G3': 1, 'G4': 1, 'H1': 1, 'H2': 1, 'H3': 1, 'H4': 1})
+E2 -> Counter({'F1': 1, 'F2': 1, 'F3': 1, 'F4': 1, 'G1': 1, 'G2': 1, 'G3': 1, 'G4': 1, 'H1': 1, 'H2': 1, 'H3': 1, 'H4': 1})
+E3 -> Counter({'F1': 1, 'F2': 1, 'F3': 1, 'F4': 1, 'G1': 1, 'G2': 1, 'G3': 1, 'G4': 1, 'H1': 1, 'H2': 1, 'H3': 1, 'H4': 1})
+E4 -> Counter({'F1': 1, 'F2': 1, 'F3': 1, 'F4': 1, 'G1': 1, 'G2': 1, 'G3': 1, 'G4': 1, 'H1': 1, 'H2': 1, 'H3': 1, 'H4': 1})
+F1 -> Counter({'E1': 1, 'E2': 1, 'E3': 1, 'E4': 1, 'G1': 1, 'G2': 1, 'G3': 1, 'G4': 1, 'H1': 1, 'H2': 1, 'H3': 1, 'H4': 1})
+F2 -> Counter({'E1': 1, 'E2': 1, 'E3': 1, 'E4': 1, 'G1': 1, 'G2': 1, 'G3': 1, 'G4': 1, 'H1': 1, 'H2': 1, 'H3': 1, 'H4': 1})
+F3 -> Counter({'E1': 1, 'E2': 1, 'E3': 1, 'E4': 1, 'G1': 1, 'G2': 1, 'G3': 1, 'G4': 1, 'H1': 1, 'H2': 1, 'H3': 1, 'H4': 1})
+F4 -> Counter({'E1': 1, 'E2': 1, 'E3': 1, 'E4': 1, 'G1': 1, 'G2': 1, 'G3': 1, 'G4': 1, 'H1': 1, 'H2': 1, 'H3': 1, 'H4': 1})
+G1 -> Counter({'E1': 1, 'E2': 1, 'E3': 1, 'E4': 1, 'F1': 1, 'F2': 1, 'F3': 1, 'F4': 1, 'H1': 1, 'H2': 1, 'H3': 1, 'H4': 1})
+G2 -> Counter({'E1': 1, 'E2': 1, 'E3': 1, 'E4': 1, 'F1': 1, 'F2': 1, 'F3': 1, 'F4': 1, 'H1': 1, 'H2': 1, 'H3': 1, 'H4': 1})
+G3 -> Counter({'E1': 1, 'E2': 1, 'E3': 1, 'E4': 1, 'F1': 1, 'F2': 1, 'F3': 1, 'F4': 1, 'H1': 1, 'H2': 1, 'H3': 1, 'H4': 1})
+G4 -> Counter({'E1': 1, 'E2': 1, 'E3': 1, 'E4': 1, 'F1': 1, 'F2': 1, 'F3': 1, 'F4': 1, 'H1': 1, 'H2': 1, 'H3': 1, 'H4': 1})
+H1 -> Counter({'E1': 1, 'E2': 1, 'E3': 1, 'E4': 1, 'F1': 1, 'F2': 1, 'F3': 1, 'F4': 1, 'G1': 1, 'G2': 1, 'G3': 1, 'G4': 1})
+H2 -> Counter({'E1': 1, 'E2': 1, 'E3': 1, 'E4': 1, 'F1': 1, 'F2': 1, 'F3': 1, 'F4': 1, 'G1': 1, 'G2': 1, 'G3': 1, 'G4': 1})
+H3 -> Counter({'E1': 1, 'E2': 1, 'E3': 1, 'E4': 1, 'F1': 1, 'F2': 1, 'F3': 1, 'F4': 1, 'G1': 1, 'G2': 1, 'G3': 1, 'G4': 1})
+H4 -> Counter({'E1': 1, 'E2': 1, 'E3': 1, 'E4': 1, 'F1': 1, 'F2': 1, 'F3': 1, 'F4': 1, 'G1': 1, 'G2': 1, 'G3': 1, 'G4': 1})
+"""
