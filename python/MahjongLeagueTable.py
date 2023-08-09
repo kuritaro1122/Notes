@@ -96,11 +96,10 @@ def get_tables_from_random(player_list:list, tables_num=TABLE_NUM, table_player_
     tables = [[] for i in range(tables_num)]
     for i in range(tables_num):
         for k in range(table_player_num):
-            c = 0
-            while True:
-                c += 1
-                p = player_list[random.randint(0, len(player_list) - 1)]
-                if can_player_sit(p, tables, i) or c > 99999:
+            temp_player_list = [p for p in player_list]
+            while len(temp_player_list) > 0:
+                p = temp_player_list.pop(random.randint(0, len(temp_player_list) - 1))
+                if can_player_sit(p, tables, i):
                     break
             if can_player_sit(p, tables, i):
                 tables[i].append(p)
