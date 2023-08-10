@@ -11,7 +11,6 @@ from enum import Enum
 import copy
 from importlib import invalidate_caches
 from os import remove
-from pickle import FALSE, TRUE
 import random
 import collections
 import itertools
@@ -177,7 +176,7 @@ def get_tables_from_random(player_list:list, tables_num=TABLE_NUM, table_player_
                 tables[i].append(p)
     return tables
 # 作成可能なテーブルを全取得する
-def get_all_tables_conbination(player_list:list, table_player_num=TABLE_PLAYER_NUM, current_table=[], ignore_history:bool=FALSE, ignore_team:bool=FALSE):
+def get_all_tables_conbination(player_list:list, table_player_num=TABLE_PLAYER_NUM, current_table=[], ignore_history:bool=False, ignore_team:bool=False):
     if len(current_table) >= table_player_num:
         return [current_table]
     all_tables_conbination = [] # current_tableに1人加えた複数のテーブル
@@ -213,9 +212,9 @@ def fill_match_tables_blank(match_tables:list):
             match_tables[i] = table_candidates[0]
             print(player_to_name_table(v), '->', player_to_name_table(match_tables[i]))
 
-def change_matchs_tables_from_tables_diff(matchs_tables:list, table_params:list, add_not_remove:bool = TRUE):
+def change_matchs_tables_from_tables_diff(matchs_tables:list, table_params:list, add_not_remove:bool = True):
     for table_param in table_params:
-        if add_not_remove == TRUE:
+        if add_not_remove == True:
             matchs_tables[table_param[TABLE_PARAM.MATCH_INDEX]][table_param[TABLE_PARAM.TABLE_INDEX]] = table_param[TABLE_PARAM.NEW_TABLE]
             add_history_each(matchs_tables[table_param[TABLE_PARAM.MATCH_INDEX]][table_param[TABLE_PARAM.TABLE_INDEX]])
         else:
@@ -240,8 +239,8 @@ def adjust_matchs_tables(matchs_tables:list):
                 # for t in added_tables:
                 #     matchs_tables[t[TABLE_PARAM.MATCH_INDEX]][t[TABLE_PARAM.TABLE_INDEX]] = t[TABLE_PARAM.NEW_TABLE]
                 #     add_history_each(matchs_tables[t[TABLE_PARAM.MATCH_INDEX]][t[TABLE_PARAM.TABLE_INDEX]])
-                change_matchs_tables_from_tables_diff(matchs_tables, added_tables_param, add_not_remove=TRUE)
-                change_matchs_tables_from_tables_diff(matchs_tables, remove_tables_param, add_not_remove=FALSE)
+                change_matchs_tables_from_tables_diff(matchs_tables, added_tables_param, add_not_remove=True)
+                change_matchs_tables_from_tables_diff(matchs_tables, remove_tables_param, add_not_remove=False)
 # added_tables -> [0, 0, [Player, Player, Player]]
 # return -> 0, [matches_index, table_index, [Player, Player, Player], ok:bool]
 def adjust_match_table(matchs_tables:list, match_index:int, removed_tables:list=[], added_tables:list=[]):
