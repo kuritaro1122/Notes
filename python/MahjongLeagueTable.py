@@ -64,7 +64,11 @@ class Player:
     def add_history(self, player):
         self.history.append(player)
     def add_history_range(self, player_list:list):
+        if self.to_string() == 'G4':
+            print('his', self.to_string(), player_to_name_table(self.history))
         self.history.extend(player_list)
+        if self.to_string() == 'G4':
+            print('his', self.to_string(), player_to_name_table(self.history))
     def remove_history_range(self, player_list:list):
         for p in player_list:
             if self.history.__contains__(p):
@@ -270,11 +274,12 @@ def adjust_matchs_tables(matchs_tables:list, player_list:list):
 # return -> 0, [matches_index, table_index, [Player, Player, Player], ok:bool]
 def adjust_match_table(matchs_tables:list, player_list:list, match_index:int, removed_tables:list=[], added_tables:list=[]):
     temp_matchs_tables = copy.deepcopy(matchs_tables)
-    temp_added_tables = copy.deepcopy(added_tables)
-    temp_removed_tables = copy.deepcopy(removed_tables)
+    #temp_matchs_tables = [[[player for player in table] for table in match_tables] for match_tables in matchs_tables]
+    temp_added_tables = [t for t in added_tables]
+    temp_removed_tables = [t for t in removed_tables]
     invalidated_table_indexes = []
     for i, table in enumerate(temp_matchs_tables[match_index]):
-        for added_table in added_tables:
+        for added_table in temp_added_tables:
             if duplicate_player_count(table, added_table[TABLE_PARAM.NEW_TABLE]) >= 2:
                 invalidated_table_indexes.append(i)
                 remove_table_param = [match_index, i, temp_matchs_tables[match_index][i]]
@@ -286,7 +291,7 @@ def adjust_match_table(matchs_tables:list, player_list:list, match_index:int, re
             change_matchs_tables_from_tables_diff(temp_matchs_tables, [[match_index, i, []]], add_not_remove=False)
     print_debug(match_index+1, '回戦 無効なtable_index:', invalidated_table_indexes, log_level=LOG_LEVEL.L2_CALUCULATION_LOG)
     if len(invalidated_table_indexes) <= 0:
-        return added_tables, temp_removed_tables
+        return temp_added_tables, temp_removed_tables
     print_debug(player_to_name_tables(temp_matchs_tables[match_index]), log_level=LOG_LEVEL.L3_CALUCULATION_DETAIL)
     r = get_remain_player(tables=temp_matchs_tables[match_index], player_list=player_list)
     print_debug('remain:', player_to_name_table(r), log_level=LOG_LEVEL.L2_CALUCULATION_LOG)
