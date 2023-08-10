@@ -176,17 +176,19 @@ def get_tables_from_random(player_list:list, tables_num=TABLE_NUM, table_player_
                 tables[i].append(p)
     return tables
 # 作成可能なテーブルを全取得する
-def get_all_tables(player_list:list, table_player_num=TABLE_PLAYER_NUM, current_table=[], ignore_history:bool=FALSE, ignore_team:bool=FALSE):
+def get_all_tables_conbination(player_list:list, table_player_num=TABLE_PLAYER_NUM, current_table=[], ignore_history:bool=FALSE, ignore_team:bool=FALSE):
     if len(current_table) >= table_player_num:
         return [current_table]
-    next_all_tables = [] # current_tableに1人加えた複数のテーブル
+    all_tables_conbination = [] # current_tableに1人加えた複数のテーブル
     for p in player_list:
+        if len(current_table) > 0 and compare_name(current_table[len(current_table) - 1]) > compare_name(p):
+            continue
         if can_player_sit_to_table(p, current_table, ignore_history=ignore_history, ignore_team=ignore_team):
             table = [p for p in current_table]
             table.append(p)
-            next_tables = get_all_tables(player_list=player_list, table_player_num=table_player_num, current_table=table, ignore_history=ignore_history)
-            next_all_tables.extend(next_tables)
-    return next_all_tables
+            next_tables = get_all_tables_conbination(player_list=player_list, table_player_num=table_player_num, current_table=table, ignore_history=ignore_history)
+            all_tables_conbination.extend(next_tables)
+    return all_tables_conbination
 # 全ての条件から現在のtablesに挿入可能なtablesを返す
 def get_tables_can_be_inserted(tables:list) -> list:
     tables = [t for t in get_all_tables(get_remain_player(tables)) if not_duplicate_table([t for t in tables if len(t) >= TABLE_PLAYER_NUM], t)]
