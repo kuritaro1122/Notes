@@ -140,7 +140,7 @@ def print_history(player_list:list):
     print_debug('match history:', log_level=LOG_LEVEL.L1_DETAIL)
     for p in player_list:
         c = collections.Counter([h.to_string() for h in sorted(p.history, key=compare_name)])
-        print_debug(p.to_string(), '->', c, 'total_count:', sum(c.values()), 'total_match_count', int(sum(c.values())/3), log_level=LOG_LEVEL.L1_DETAIL)
+        print_debug(p.to_string(), '->', c, 'total_match_count:', int(sum(c.values())/3), 'duplicate:', sum([a for a in c.values() if a > 1]),log_level=LOG_LEVEL.L1_DETAIL)
 def print_history_again(matchs_tables:list):
     temp_matchs_tables = copy.deepcopy(matchs_tables)
     for match_tables in temp_matchs_tables:
