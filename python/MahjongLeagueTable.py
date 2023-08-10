@@ -350,24 +350,35 @@ def fill_match_tables_blank_swap(match_tables:list, player_list:list):
             else:
                 break
         remain_players = [p for i, p in enumerate(remain_players) if i not in temp_indexes]
-def get_swap_player(match_tables:list, index:int, swap:Player):
-    for i, table in enumerate(match_tables):
-        if i == index:
+def get_swap_player(match_tables:list, swap_match_index:int, swap_player:Player):
+    temp_match_index = -1
+    temp_table_index = -1
+    temp_score = 0
+    for match_table_index, match_table in enumerate(match_tables):
+        if match_table_index == swap_match_index:
             continue
-        print_debug('search:', i, player_to_name_table(table), log_level=LOG_LEVEL.L2_CALUCULATION_LOG)
-        # すでに存在している
-        if swap.team in [t.team for t in table]:
-            print_debug('- duplicate:', get_team_name(swap.team), log_level=LOG_LEVEL.L3_CALUCULATION_DETAIL)
+        print_debug('search:', match_table_index, player_to_name_table(match_table), log_level=LOG_LEVEL.L2_CALUCULATION_LOG)
+        # すでに同じTeamが存在している
+        if swap_player.team in [t.team for t in match_table]:
+            print_debug('- duplicate:', get_team_name(swap_player.team), log_level=LOG_LEVEL.L3_CALUCULATION_DETAIL)
             continue
         else:
-            print_debug('- try', player_to_name_table(match_tables[index]), player_to_name_table(table), log_level=LOG_LEVEL.L3_CALUCULATION_DETAIL)
-            for k, p in enumerate(table):
-                if p.team not in [q.team for q in match_tables[index]]:
-                    print_debug('ok:', p.to_string(), log_level=LOG_LEVEL.L3_CALUCULATION_DETAIL)
-                    return (i, k)
+            print_debug('- try', player_to_name_table(match_tables[swap_match_index]), player_to_name_table(match_table), log_level=LOG_LEVEL.L3_CALUCULATION_DETAIL)
+            for match_player_index, match_player in enumerate(match_table):
+                # match_playerをswap_matchの中に入れられるか
+                if match_player.team not in [q.team for q in match_tables[swap_match_index]]:
+                    print_debug('ok:', match_player.to_string(), log_level=LOG_LEVEL.L3_CALUCULATION_DETAIL)
+                    score = get_score(match_player, [a for a in match_tables[swap_match_index] if a != swap_player]) + get_score(swap_player, [a for a in match_table if a != match_player])
+                    print(score)
+                    if (temp_match_index < 0 or temp_table_index < 0) or score > temp_score:
+                        temp_match_index = match_table_index
+                        temp_table_index = match_player_index
+                        temp_score = score
+                        print('update')
+                    #return (i, k)
                 else:
-                    print_debug('no:', p.to_string(), log_level=LOG_LEVEL.L3_CALUCULATION_DETAIL)
-    return (-1, -1)
+                    print_debug('no:', match_player.to_string(), log_level=LOG_LEVEL.L3_CALUCULATION_DETAIL)
+    return (temp_match_index, temp_table_index)
                 
 def fast_check_match_tables(match_tables:list):
     for k, table in enumerate(match_tables):
