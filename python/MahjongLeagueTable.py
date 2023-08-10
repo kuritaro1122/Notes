@@ -128,6 +128,10 @@ def player_to_name_table(table:list) -> list:
     return [p.to_string() for p in table]
 def player_to_name_tables(tables:list) -> list:
     return [[p.to_string() for p in table] for table in tables]
+def player_to_name_table_param(table_param:list):
+    return [table_param[0], table_param[1], player_to_name_table(table_param[2])]
+def player_to_name_table_params(table_params:list):
+    return [player_to_name_table_param(p) for p in table_params]
 def print_table_count(matchs_tables:list):
     created_table_count = [len([len(table) for table in match_tables if len(table) >= TABLE_PLAYER_NUM]) for match_tables in matchs_tables]
     print('tables_count:', created_table_count)
