@@ -94,15 +94,15 @@ def get_score(player:Player, table:list):
     return -player.get_match_num() + (can_player_sit_to_table(player, table) if 0 else -999)
 def compare_name(player:Player):
     return player.team * TEAM_PLAYER_NUM + int(player.name)
-def get_table_compared(tables:list):
-    index = 0
-    score = sum([get_score(p, [t for t in tables[index] if t != p]) for p in tables[index]])
-    for i, table in enumerate(tables):
-        s = sum([get_score(p, [t for t in table if t != p]) for p in table])
-        if s > score:
-            score = s
-            index = i
-    return tables[index]
+# def get_table_compared(tables:list):
+#     index = 0
+#     score = sum([get_score(p, [t for t in tables[index] if t != p]) for p in tables[index]])
+#     for i, table in enumerate(tables):
+#         s = sum([get_score(p, [t for t in table if t != p]) for p in table])
+#         if s > score:
+#             score = s
+#             index = i
+#     return tables[index]
 
 ### ルール, 条件チェック
 def can_player_sit(target:Player, tables:list, table_index:int, ignore_history:bool=False, ignore_team:bool=False):
