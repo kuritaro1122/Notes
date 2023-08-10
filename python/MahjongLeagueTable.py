@@ -24,8 +24,8 @@ TEAM_PLAYER_NUM = 4
 
 # 試合回数を等しくするようにするか、ランダムに振り分けるか
 def use_history_or_random(index:int) -> bool:
-    # return False # 完全ランダム
-    return True # 対戦回数重視
+    return False # 完全ランダム
+    # return True # 対戦回数重視
     # return index > 0 # 途中から対戦回収重視
 
 ### チーム名 ###
@@ -87,11 +87,22 @@ def remove_history_each(table:list):
         player.remove_history_range([p for p in table if p != player])
 # どちらの方を選ぶか比較する
 def compare(a:Player, b:Player, tables:list, table_index:int):
-    a_score = -a.get_match_num() + (can_player_sit(a, tables, table_index) if 0 else -999)
-    b_score = -b.get_match_num() + (can_player_sit(b, tables, table_index) if 0 else -999)
+    a_score = get_score(a, tables[table_index])
+    b_score = get_score(b, tables[table_index])
     return a_score - b_score
+def get_score(player:Player, table:list):
+    return -player.get_match_num() + (can_player_sit_to_table(player, table) if 0 else -999)
 def compare_name(player:Player):
     return player.team * TEAM_PLAYER_NUM + int(player.name)
+def get_table_compared(tables:list):
+    index = 0
+    score = sum([get_score(p, [t for t in tables[index] if t != p]) for p in tables[index]])
+    for i, table in enumerate(tables):
+        s = sum([get_score(p, [t for t in table if t != p]) for p in table])
+        if s > score:
+            score = s
+            index = i
+    return tables[index]
 
 ### ルール, 条件チェック
 def can_player_sit(target:Player, tables:list, table_index:int):
@@ -129,7 +140,7 @@ def print_history(player_list:list):
     print_debug('match history:', log_level=LOG_LEVEL.L1_DETAIL)
     for p in player_list:
         c = collections.Counter([h.to_string() for h in sorted(p.history, key=compare_name)])
-        print_debug(p.to_string(), '->', c, 'total_count:', sum(c.values()), log_level=LOG_LEVEL.L1_DETAIL)
+        print_debug(p.to_string(), '->', c, 'total_count:', sum(c.values()), 'total_match_count', int(sum(c.values())/3), log_level=LOG_LEVEL.L1_DETAIL)
 def print_hisotry_again(matchs_tables:list):
     temp_matchs_tables = copy.deepcopy(matchs_tables)
     for match_tables in temp_matchs_tables:
@@ -254,8 +265,6 @@ def change_matchs_tables_from_tables_diff(matchs_tables:list, table_params:list,
             matchs_tables[table_param[TABLE_PARAM.MATCH_INDEX]][table_param[TABLE_PARAM.TABLE_INDEX]] = []
             #print(player_to_name_tables(matchs_tables[table_param[TABLE_PARAM.MATCH_INDEX]]))
 
-
-
 # 対戦履歴を無視して最適化を行う
 def adjust_matchs_tables(matchs_tables:list, player_list:list):
     for i in range(TABLE_NUM):
@@ -265,14 +274,7 @@ def adjust_matchs_tables(matchs_tables:list, player_list:list):
             print_debug('修正', i,'週目 -', index, '回戦 から修正', log_level=LOG_LEVEL.L3_CALUCULATION_DETAIL)
             print_debug('add:', [(t[0], t[1], player_to_name_table(t[TABLE_PARAM.NEW_TABLE])) for t in added_tables_param], 'len:', len(added_tables_param), log_level=LOG_LEVEL.L3_CALUCULATION_DETAIL)
             print_debug('rem:', [(t[0], t[1], player_to_name_table(t[TABLE_PARAM.NEW_TABLE])) for t in remove_tables_param], 'len:', len(remove_tables_param), log_level=LOG_LEVEL.L3_CALUCULATION_DETAIL)
-            ### これの追加タイミングがおかしい...
             if len(added_tables_param) > len(remove_tables_param):
-                # for t in remove_tables:
-                #     remove_history_each(matchs_tables[t[TABLE_PARAM.MATCH_INDEX]][t[TABLE_PARAM.TABLE_INDEX]])
-                #     matchs_tables[t[TABLE_PARAM.MATCH_INDEX]][t[TABLE_PARAM.TABLE_INDEX]] = []
-                # for t in added_tables:
-                #     matchs_tables[t[TABLE_PARAM.MATCH_INDEX]][t[TABLE_PARAM.TABLE_INDEX]] = t[TABLE_PARAM.NEW_TABLE]
-                #     add_history_each(matchs_tables[t[TABLE_PARAM.MATCH_INDEX]][t[TABLE_PARAM.TABLE_INDEX]])
                 change_matchs_tables_from_tables_diff(matchs_tables, added_tables_param, add_not_remove=True)
                 change_matchs_tables_from_tables_diff(matchs_tables, remove_tables_param, add_not_remove=False)
 # added_tables -> [0, 0, [Player, Player, Player]]
@@ -304,8 +306,8 @@ def adjust_match_table(matchs_tables:list, player_list:list, match_index:int, re
     #candidates_add_tables = [t for t in candidates_add_tables if (is_players_exist(tables=temp_matchs_tables[match_index], players=t))]
     #print('candidates2:', len(candidates_add_tables))#, player_to_name_tables(candidates_add_tables))
     if len(candidates_add_tables) > 0:
-        # ランダムな空欄にランダムな候補を挿入する
-        add_table_param = [match_index, invalidated_table_indexes[random.randint(0, len(invalidated_table_indexes) - 1)], candidates_add_tables[random.randint(0, len(candidates_add_tables) - 1)]]
+        # 候補からテーブルを選ぶ
+        add_table_param = [match_index, invalidated_table_indexes[random.randint(0, len(invalidated_table_indexes) - 1)], get_table_compared(candidates_add_tables)]
         temp_added_tables.append(add_table_param)
         change_matchs_tables_from_tables_diff(temp_matchs_tables, [add_table_param], add_not_remove=True)
         print_debug('current_match:', player_to_name_tables(temp_matchs_tables[match_index]), log_level=LOG_LEVEL.L2_CALUCULATION_LOG)
@@ -315,8 +317,6 @@ def adjust_match_table(matchs_tables:list, player_list:list, match_index:int, re
             print_debug('match', i+1, player_to_name_tables(temp_matchs_tables[i]), log_level=LOG_LEVEL.L3_CALUCULATION_DETAIL)
         added_tables, temp_removed_tables = adjust_match_table(matchs_tables=temp_matchs_tables, player_list=player_list, match_index=match_index-1, removed_tables=temp_removed_tables, added_tables=temp_added_tables)
     return added_tables, temp_removed_tables
-
-
 
 def change_match_order(matchs_tables:list):
     temp_arr = []
