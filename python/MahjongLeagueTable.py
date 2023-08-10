@@ -188,7 +188,7 @@ def generate_match_tables(player_list:list):
 def get_tables_from_history(player_list:list, tables_num=TABLE_NUM, table_player_num=TABLE_PLAYER_NUM):
     tables = [[] for i in range(tables_num)]
     for i in range(tables_num):
-        for k in range(table_player_num):
+        for _ in range(table_player_num):
             cp = None
             for p in player_list:
                 if can_player_sit(p, tables, i) and (cp == None or compare(p, cp, tables, i) > 0):
@@ -347,7 +347,6 @@ def fill_match_tables_blank_swap(match_tables:list, player_list:list):
                         table.append(temp)
                         temp_indexes.append(i)
                         print_debug('swap:', p.to_string(), '-', temp.to_string(), log_level=LOG_LEVEL.L2_CALUCULATION_LOG)
-                    pass
             else:
                 break
         remain_players = [p for i, p in enumerate(remain_players) if i not in temp_indexes]
