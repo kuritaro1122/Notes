@@ -64,11 +64,7 @@ class Player:
     def add_history(self, player):
         self.history.append(player)
     def add_history_range(self, player_list:list):
-        if self.to_string() == 'G4':
-            print('his', self.to_string(), player_to_name_table(self.history))
         self.history.extend(player_list)
-        if self.to_string() == 'G4':
-            print('his', self.to_string(), player_to_name_table(self.history))
     def remove_history_range(self, player_list:list):
         for p in player_list:
             if self.history.__contains__(p):
