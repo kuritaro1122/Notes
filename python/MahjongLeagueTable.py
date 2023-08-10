@@ -95,7 +95,6 @@ def get_score(player:Player, table:list):
     temp_player.add_history_range(table)
     c = collections.Counter([h.to_string() for h in sorted(temp_player.history, key=compare_name)])
     duplicate_score = -sum([pow(a, 2) for a in c.values() if a > 1])
-    print(player.to_string(), player_to_name_table(table))
     return -player.get_match_num() + duplicate_score + (can_player_sit_to_table(player, table) if 0 else -999)
 def compare_name(player:Player):
     return player.team * TEAM_PLAYER_NUM + int(player.name)
@@ -369,13 +368,10 @@ def get_swap_player(match_tables:list, swap_match_index:int, swap_player:Player)
                 if match_player.team not in [q.team for q in match_tables[swap_match_index]]:
                     print_debug('ok:', match_player.to_string(), log_level=LOG_LEVEL.L3_CALUCULATION_DETAIL)
                     score = get_score(match_player, [a for a in match_tables[swap_match_index] if a != swap_player]) + get_score(swap_player, [a for a in match_table if a != match_player])
-                    print(score)
                     if (temp_match_index < 0 or temp_table_index < 0) or score > temp_score:
                         temp_match_index = match_table_index
                         temp_table_index = match_player_index
                         temp_score = score
-                        print('update')
-                    #return (i, k)
                 else:
                     print_debug('no:', match_player.to_string(), log_level=LOG_LEVEL.L3_CALUCULATION_DETAIL)
     return (temp_match_index, temp_table_index)
