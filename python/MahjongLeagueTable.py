@@ -293,11 +293,14 @@ if __name__ == '__main__':
     print('メンバー')
     print(names)
     # ① とりあえず配置
+    print('# first step')
     matchs_tables = [[] for i in range(MATCH_NUM)]
     for i, match_tables in enumerate(matchs_tables):
         print(i+1,'回戦')
         match_tables.extend(generate_match_tables(player_list))
     print_table_count(matchs_tables=matchs_tables)
+
+    print('# second step')
     # ② 隙間を埋める
     for i, match_tables in enumerate(matchs_tables):
         print(i+1,'回戦')
@@ -306,6 +309,8 @@ if __name__ == '__main__':
             print(player_to_name_table(table))
     print_table_count(matchs_tables=matchs_tables)
     exit()
+
+    print('# third step')
     # ③ 入れ替えて隙間を埋める
     for i in range(100):
         adjust_matchs_tables(matchs_tables)
