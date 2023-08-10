@@ -55,7 +55,8 @@ class Player:
         self.history.extend(player_list)
     def remove_history_range(self, player_list:list):
         for p in player_list:
-            self.history.remove(p)
+            if self.history.__contains__(p):
+                self.history.remove(p)
     def clear_history(self):
         self.history.clear()
     def is_contain_history(self, player):
@@ -71,7 +72,7 @@ def add_history_each(table:list):
         player.add_history_range([p for p in table if p != player])
 def remove_history_each(table:list):
     for player in table:
-        player.rem_history_range([p for p in table if p != player])
+        player.remove_history_range([p for p in table if p != player])
 # どちらの方を選ぶか比較する
 def compare(a:Player, b:Player, tables:list, table_index:int):
     a_score = -a.get_match_num() + (can_player_sit(a, tables, table_index) if 0 else -999)
