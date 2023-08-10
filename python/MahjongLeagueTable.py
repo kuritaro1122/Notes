@@ -91,7 +91,12 @@ def compare(a:Player, b:Player, tables:list, table_index:int):
     b_score = get_score(b, tables[table_index])
     return a_score - b_score
 def get_score(player:Player, table:list):
-    return -player.get_match_num() + (can_player_sit_to_table(player, table) if 0 else -999)
+    temp_player = copy.deepcopy(player)
+    temp_player.add_history_range(table)
+    c = collections.Counter([h.to_string() for h in sorted(temp_player.history, key=compare_name)])
+    duplicate_score = -sum([pow(a, 2) for a in c.values() if a > 1])
+    print(player.to_string(), player_to_name_table(table))
+    return -player.get_match_num() + duplicate_score + (can_player_sit_to_table(player, table) if 0 else -999)
 def compare_name(player:Player):
     return player.team * TEAM_PLAYER_NUM + int(player.name)
 # def get_table_compared(tables:list):
