@@ -25,9 +25,9 @@ TEAM_PLAYER_NUM = 4
 
 # 試合回数を等しくするようにするか、ランダムに振り分けるか
 def use_history_or_random(index:int) -> bool:
-    # return False
-    # return True
-    return index > 0
+    # return False # 完全ランダム
+    return True # 対戦回数重視
+    # return index > 0 # 途中から対戦回収重視
 
 ### チーム名 ###
 TEAM_LIST = { 0:'A', 1:'B', 2:'C', 3:'D', 4:'E', 5:'F', 6:'G', 7:'H' }
