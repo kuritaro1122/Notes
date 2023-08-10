@@ -110,16 +110,19 @@ def duplicate_player_count(table1:list, table2:list):
 def print_history(player_list:list):
     for p in player_list:
         print(p.to_string(), '->', collections.Counter([h.to_string() for h in sorted(p.history, key=compare_name)]))
-def print_hisotry_again(matchs_tables:list, player_list:list):
-    for match_tables in matchs_tables:
+def print_hisotry_again(matchs_tables:list):
+    temp_matchs_tables = copy.deepcopy(matchs_tables)
+    for match_tables in temp_matchs_tables:
         for table in match_tables:
             for p in table:
                 p.clear_history()
-    #print_history(player_list)
-    for match_tables in matchs_tables:
+    for match_tables in temp_matchs_tables:
         for table in match_tables:
-            add_history_each(table)
-    print_history(player_list)
+            if len(table) >= TABLE_PLAYER_NUM:
+                add_history_each(table)
+    l = list(itertools.chain.from_iterable(itertools.chain.from_iterable(temp_matchs_tables)))
+    v = [k for k, v in collections.Counter(l).items() if v > 1]
+    print_history(sorted(v, key=compare_name))
 
 def player_to_name_table(table:list) -> list:
     return [p.to_string() for p in table]
